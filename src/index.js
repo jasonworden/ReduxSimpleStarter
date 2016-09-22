@@ -15,10 +15,16 @@ class App extends Component {
     const that = this;
     this.setState = this.setState.bind(this);
 
-    this.state = {videos: []};
+    this.state = {
+      videos: [],
+      selectedVideo: null
+    };
 
     YTSearch({key: API_KEY, term: 'cats'}, function(videos) {
-      that.setState({videos});
+      that.setState({
+        videos: videos,
+        selectedVideo: videos[0]
+      });
     });
   }
 
@@ -26,8 +32,10 @@ class App extends Component {
     return (
       <div>
         <SearchBar />
-        <VideoDetail video={this.state.videos[0]} />
-        <VideoList videos={this.state.videos} />
+      <VideoDetail video={this.state.selectedVideo} />
+        <VideoList
+          videos={this.state.videos}
+          onVideoSelect={selectedVideo => this.setState({selectedVideo: selectedVideo})}/>
       </div>
     )
   }

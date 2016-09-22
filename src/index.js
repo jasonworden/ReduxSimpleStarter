@@ -12,15 +12,21 @@ const API_KEY = 'AIzaSyAkULVvoDtRA45aPYrUFj40knzLfymBp3Y';
 class App extends Component {
   constructor(props) {
     super(props);
-    const that = this;
+    // const that = this;
     this.setState = this.setState.bind(this);
+    this.videoSearch = this.videoSearch.bind(this);
 
     this.state = {
       videos: [],
       selectedVideo: null
     };
 
-    YTSearch({key: API_KEY, term: 'cats'}, function(videos) {
+    this.videoSearch('cats');
+  }
+
+  videoSearch = (term) => {
+    const that = this;
+    YTSearch({key: API_KEY, term: term}, function(videos) {
       that.setState({
         videos: videos,
         selectedVideo: videos[0]
@@ -31,7 +37,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <SearchBar />
+        <SearchBar onSearchTermChange={term => this.videoSearch(term)}/>
       <VideoDetail video={this.state.selectedVideo} />
         <VideoList
           videos={this.state.videos}
